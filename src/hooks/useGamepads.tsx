@@ -4,8 +4,13 @@ type GamepadsState = {
   [index: number]: Gamepad;
 };
 
+type Timestamps = {
+  [index: number]: number;
+};
+
 const useGamepads = () => {
   const [gamepads, setGamepads] = useState<GamepadsState>({});
+  const timestamps = useRef<Timestamps>({});
   const processRef = useRef<number>();
 
   const onGamepadConnected = useCallback(
@@ -31,9 +36,10 @@ const useGamepads = () => {
         .map(newPadState => {
           if (
             !newPadState ||
-            gamepads[newPadState.index].timestamp === newPadState.timestamp
+            timestamps.current[newPadState.index] === newPadState.timestamp
           )
             return;
+          timestamps.current[newPadState.index] = newPadState.timestamp;
           setGamepads(pads => ({...pads, [newPadState.index]: newPadState}));
         });
     }
