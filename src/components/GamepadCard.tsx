@@ -7,9 +7,9 @@ const GamepadCard = (gamepad: Gamepad, gamepadIndex: number) => {
         {gamepad.buttons.map((button, buttonIndex) => (
           <p
             key={buttonIndex}
-            className="buttonInfo">{`B${buttonIndex}: ${button.value.toFixed(
-            2,
-          )}`}</p>
+            className={`buttonInfo ${
+              button.touched ? 'buttonActive' : ''
+            }`}>{`B${buttonIndex}: ${button.value.toFixed(2)}`}</p>
         ))}
       </div>
       <hr />

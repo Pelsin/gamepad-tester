@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="58" height="58"><svg version="1.1" id="SvgjsSvg1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 58 58" xml:space="preserve">
+<path style="fill:none;stroke:#38454F;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" d="M26,25V13.5
+	c0-2.475,2.025-4.5,4.5-4.5h0c2.475,0,4.5,2.025,4.5,4.5V17c0,2.2,1.8,4,4,4h0c2.2,0,4-1.8,4-4V1"></path>
+<rect x="1" y="25" style="fill:#38454F;" width="56" height="33"></rect>
+<polygon style="fill:#CBD4D8;" points="52,53 6,53 6,30 27,30 27,38 52,38 "></polygon>
+<polygon style="fill:#546A79;" points="21,40 18,40 18,37 14,37 14,40 11,40 11,44 14,44 14,47 18,47 18,44 21,44 "></polygon>
+<circle style="fill:#DD352E;" cx="45.5" cy="45.5" r="2.5"></circle>
+<circle style="fill:#DD352E;" cx="36.5" cy="45.5" r="2.5"></circle>
+<line style="fill:none;stroke:#AFB6BB;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;" x1="25" y1="46" x2="30" y2="46"></line>
+</svg><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+</style></svg>
