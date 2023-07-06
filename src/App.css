@@ -1,0 +1,29 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.title {
+  background: -webkit-linear-gradient(0deg, white 0%, #48abe0 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gamepadCard {
+  background-color: rgba(0, 0, 0, 0.2);
+  border: solid 1px rgb(30, 40, 60);
+  padding: 1.5em;
+  border-radius: 0.75em;
+  box-shadow: drop-shadow(0 0 2.5em #61dafbaa);
+  max-width: 760px;
+}
+
+.buttonWrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+.buttonInfo {
+  padding-right: 1em;
+}
