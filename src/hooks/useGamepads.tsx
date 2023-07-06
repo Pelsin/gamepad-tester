@@ -34,7 +34,6 @@ const useGamepads = () => {
             gamepads[newPadState.index].timestamp === newPadState.timestamp
           )
             return;
-          console.log('changed');
           setGamepads(pads => ({...pads, [newPadState.index]: newPadState}));
         });
     }

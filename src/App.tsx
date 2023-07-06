@@ -4,7 +4,7 @@ import useGamepads from './hooks/useGamepads';
 
 function App() {
   const gamepads = useGamepads();
-  console.log(gamepads);
+
   return (
     <>
       <h1 className="title">Gamepad tester</h1>
