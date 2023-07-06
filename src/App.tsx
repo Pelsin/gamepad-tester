@@ -7,7 +7,13 @@ function App() {
 
   return (
     <>
-      <h1 className="title">Gamepad tester</h1>
+      {!gamepads.length && (
+        <h1 className="title">
+          Connect a gamepad and
+          <br />
+          press any button to start
+        </h1>
+      )}
       {gamepads.map(GamepadCard)}
     </>
   );
