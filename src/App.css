@@ -16,20 +16,16 @@
   border: solid 1px rgb(30, 40, 60);
   padding: 1.5em;
   border-radius: 0.75em;
-  box-shadow: drop-shadow(0 0 2.5em #61dafbaa);
-  max-width: 760px;
+  box-shadow: 0px 10px 40px rgb(99 102 241 / 0.2);
+  max-width: 700px;
 }
 
-.buttonWrapper {
+.row {
   display: flex;
   flex-wrap: wrap;
 }
 
-.buttonInfo {
-  padding: 0 0.5em;
+.info {
+  margin-right: 0.5em;
   border-radius: 0.3em;
-}
-
-.buttonActive {
-  background-color: #61dafbaa;
 }

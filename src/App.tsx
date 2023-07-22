@@ -14,7 +14,9 @@ function App() {
           press any button to start
         </h1>
       )}
-      {gamepads.map(GamepadCard)}
+      {gamepads.map((gamepad, index) => (
+        <GamepadCard key={index} gamepad={gamepad} />
+      ))}
     </>
   );
 }
