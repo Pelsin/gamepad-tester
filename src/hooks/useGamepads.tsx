@@ -22,6 +22,7 @@ const useGamepads = () => {
   const onGamepadDisconnected = useCallback(
     (event: GamepadEvent) =>
       setGamepads(pads => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {[event.gamepad.index]: _, ...rest} = pads;
         return rest;
       }),

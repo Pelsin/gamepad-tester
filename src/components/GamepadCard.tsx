@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 type InfoType = {
   width?: string;
@@ -17,8 +17,42 @@ type GamepadType = {
   gamepad: Gamepad;
 };
 
+type ChangedButton = {
+  number: number;
+  pressed: boolean;
+};
+
+const PrintGamepadButtonChanges = (
+  lastButtons: readonly GamepadButton[],
+  newButtons: readonly GamepadButton[],
+) => {
+  const changes = newButtons.reduce<ChangedButton[]>((acc, button, index) => {
+    if (lastButtons[index] && lastButtons[index].pressed !== button.pressed) {
+      return [...acc, {number: index, pressed: button.pressed}];
+    }
+    return acc;
+  }, []);
+
+  changes?.forEach(button => {
+    console.log(
+      `Button ${button.number} changed: ${
+        button.pressed ? 'Pressed' : 'Released'
+      }`,
+    );
+  });
+};
+
 const GamepadCard = ({gamepad}: GamepadType) => {
   const [connectedAt] = useState(new Date().toLocaleString());
+  const [_, setLastButtonChange] = useState(gamepad.buttons || []);
+
+  useEffect(() => {
+    setLastButtonChange(lastButtons => {
+      PrintGamepadButtonChanges(lastButtons, gamepad.buttons);
+      return gamepad.buttons;
+    });
+  }, [gamepad.buttons]);
+
   return (
     <div className="gamepadCard">
       <h2>{gamepad.id}</h2>
