@@ -35,7 +35,7 @@ const PrintGamepadButtonChanges = (
 
   changes?.forEach(button => {
     console.log(
-      `Button ${button.number} changed: ${
+      `[${new Date().toLocaleTimeString()}] Button ${button.number}: ${
         button.pressed ? 'Pressed' : 'Released'
       }`,
     );
