@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useRef} from 'react';
 
 type InfoType = {
   width?: string;
@@ -44,13 +44,11 @@ const PrintGamepadButtonChanges = (
 
 const GamepadCard = ({gamepad}: GamepadType) => {
   const [connectedAt] = useState(new Date().toLocaleString());
-  const [_, setLastButtonChange] = useState(gamepad.buttons || []);
+  const lastButtonsRef = useRef(gamepad.buttons || []);
 
   useEffect(() => {
-    setLastButtonChange(lastButtons => {
-      PrintGamepadButtonChanges(lastButtons, gamepad.buttons);
-      return gamepad.buttons;
-    });
+    PrintGamepadButtonChanges(lastButtonsRef.current, gamepad.buttons);
+    lastButtonsRef.current = gamepad.buttons;
   }, [gamepad.buttons]);
 
   return (

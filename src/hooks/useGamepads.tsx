@@ -11,8 +11,8 @@ type Timestamps = {
 const useGamepads = () => {
   const [gamepads, setGamepads] = useState<GamepadsState>({});
   const timestamps = useRef<Timestamps>({});
-  const processRef = useRef<number>();
-
+  const processRef = useRef<number | undefined>(undefined);
+  
   const onGamepadConnected = useCallback(
     (event: GamepadEvent) =>
       setGamepads(pads => ({...pads, [event.gamepad.index]: event.gamepad})),
@@ -22,7 +22,7 @@ const useGamepads = () => {
   const onGamepadDisconnected = useCallback(
     (event: GamepadEvent) =>
       setGamepads(pads => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // eslint-disable-next-line no-unused-vars
         const {[event.gamepad.index]: _, ...rest} = pads;
         return rest;
       }),
