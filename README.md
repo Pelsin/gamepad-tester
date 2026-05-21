@@ -1,5 +1,9 @@
 # Gamepad Tester
 
+[![Deploy](https://github.com/Pelsin/gamepad-tester/actions/workflows/deploy-gh.yml/badge.svg)](https://github.com/Pelsin/gamepad-tester/actions/workflows/deploy-gh.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Live Demo](https://img.shields.io/badge/demo-online-brightgreen)](https://pelsin.github.io/gamepad-tester/)
+
 A web application for testing and debugging game controllers directly in your browser. Monitor button presses, axis movements, and debug controller input in real-time.
 
 ## Demo
