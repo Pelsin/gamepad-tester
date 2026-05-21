@@ -1,8 +1,16 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 
-type DebugCardProps = {gamepad: Gamepad};
+type DebugCardProps = {gamepad: Gamepad; onHide: () => void};
 
-type ChangedButton = {number: number; pressed: boolean; timestamp: string};
+type EventKind = 'press' | 'release';
+
+type ButtonEvent = {
+  id: number;
+  button: number;
+  kind: EventKind;
+  value: number;
+  timestamp: string;
+};
 
 const MAX_LOGS = 10000;
 
@@ -17,101 +25,167 @@ const formatter = new Intl.DateTimeFormat(undefined, {
   fractionalSecondDigits: 3,
 } as Intl.DateTimeFormatOptions);
 
-const formatTimestamp = (): string => {
-  return formatter.format(new Date());
-};
+const formatTimestamp = (): string => formatter.format(new Date());
 
-const PrintGamepadButtonChanges = (
-  lastButtons: readonly GamepadButton[],
-  newButtons: readonly GamepadButton[],
-): ChangedButton[] => {
-  const changes = newButtons.reduce<ChangedButton[]>((acc, button, index) => {
-    if (lastButtons[index] && lastButtons[index].pressed !== button.pressed) {
-      return [
-        ...acc,
-        {number: index, pressed: button.pressed, timestamp: formatTimestamp()},
-      ];
+const diffButtons = (
+  prev: readonly GamepadButton[],
+  next: readonly GamepadButton[],
+  startId: number,
+): ButtonEvent[] => {
+  const events: ButtonEvent[] = [];
+  const timestamp = formatTimestamp();
+  for (let i = 0; i < next.length; i++) {
+    const a = prev[i];
+    const b = next[i];
+    if (a && a.pressed !== b.pressed) {
+      events.push({
+        id: startId + events.length,
+        button: i,
+        kind: b.pressed ? 'press' : 'release',
+        value: b.value,
+        timestamp,
+      });
     }
-    return acc;
-  }, []);
-
-  return changes;
+  }
+  return events;
 };
 
-const formatLogEntry = (log: ChangedButton): string => {
-  return `[${log.timestamp}] Button ${log.number}: ${log.pressed ? 'Pressed' : 'Released'}`;
-};
+const formatEvent = (e: ButtonEvent): string =>
+  `[${e.timestamp}] B${e.button} ${e.kind === 'press' ? 'Press' : 'Release'} (${e.value.toFixed(2)})`;
 
-const DebugCard = ({gamepad}: DebugCardProps) => {
+const DebugCard = ({gamepad, onHide}: DebugCardProps) => {
   const lastButtonsRef = useRef(gamepad.buttons || []);
-  const [logs, setLogs] = useState<ChangedButton[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const nextIdRef = useRef(0);
+  const [logs, setLogs] = useState<ButtonEvent[]>([]);
+  const [search, setSearch] = useState('');
+  const [paused, setPaused] = useState(false);
+  const [filter, setFilter] = useState<'all' | 'press' | 'release'>('all');
+  const [copyMsg, setCopyMsg] = useState('');
 
   useEffect(() => {
-    const changes = PrintGamepadButtonChanges(
+    if (paused) {
+      lastButtonsRef.current = gamepad.buttons;
+      return;
+    }
+    const changes = diffButtons(
       lastButtonsRef.current,
       gamepad.buttons,
+      nextIdRef.current,
     );
     if (changes.length > 0) {
-      setLogs(prev => [...changes, ...prev].slice(0, MAX_LOGS));
+      nextIdRef.current += changes.length;
+      setLogs(prev => [...changes.reverse(), ...prev].slice(0, MAX_LOGS));
     }
     lastButtonsRef.current = gamepad.buttons;
-  }, [gamepad.buttons]);
+  }, [gamepad.buttons, paused]);
 
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.scrollTop = 0;
-    }
-  }, [logs]);
+  const filtered = useMemo(() => {
+    const needle = search.trim().toLowerCase();
+    return logs.filter(e => {
+      if (filter !== 'all' && e.kind !== filter) return false;
+      if (!needle) return true;
+      return formatEvent(e).toLowerCase().includes(needle);
+    });
+  }, [logs, search, filter]);
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setSearch(e.target.value);
+
+  const handleClear = () => {
+    setLogs([]);
+    nextIdRef.current = 0;
   };
 
-  const getFilteredLogs = () => {
-    if (!searchTerm) {
-      return logs;
-    }
-
+  const handleCopy = async () => {
+    const text = filtered.map(formatEvent).join('\n');
     try {
-      return logs.filter(log => {
-        const logString = formatLogEntry(log);
-        return logString.toLowerCase().includes(searchTerm.toLowerCase());
-      });
+      await navigator.clipboard.writeText(text);
+      setCopyMsg('Copied!');
     } catch {
-      return logs;
+      setCopyMsg('Copy failed');
     }
+    setTimeout(() => setCopyMsg(''), 1500);
   };
-
-  const filteredLogs = getFilteredLogs();
-
-  const logText =
-    filteredLogs.length === 0
-      ? searchTerm
-        ? 'No results found...'
-        : 'Press any button to see logs...'
-      : filteredLogs.map(log => formatLogEntry(log)).join('\n');
 
   return (
     <div className="card">
-      <h2>{gamepad.id}</h2>
-      <div style={{marginBottom: '10px'}}>
+      <div className="card-header">
+        <div className="card-title">
+          <h2>{gamepad.id}</h2>
+          <div className="card-badges">
+            <span className="badge badge-info">
+              {logs.length} event{logs.length === 1 ? '' : 's'}
+            </span>
+            {filtered.length !== logs.length && (
+              <span className="badge">{filtered.length} shown</span>
+            )}
+            {paused && <span className="badge badge-warn">paused</span>}
+          </div>
+        </div>
+        <div className="card-actions">
+          <button
+            className="action-btn"
+            onClick={() => setPaused(p => !p)}
+            title={paused ? 'Resume capturing' : 'Pause capturing'}>
+            {paused ? 'Resume' : 'Pause'}
+          </button>
+          <button
+            className="action-btn"
+            onClick={handleCopy}
+            disabled={!filtered.length}>
+            {copyMsg || 'Copy'}
+          </button>
+          <button
+            className="action-btn"
+            onClick={handleClear}
+            disabled={!logs.length}>
+            Clear
+          </button>
+          <button className="action-btn" onClick={onHide}>
+            Hide Debug
+          </button>
+        </div>
+      </div>
+
+      <div className="debug-controls">
         <input
           type="text"
-          placeholder="Search"
-          value={searchTerm}
-          onChange={handleFilterChange}
+          placeholder="Search events..."
+          value={search}
+          onChange={handleSearch}
         />
+        <div className="debug-filters">
+          {(['all', 'press', 'release'] as const).map(opt => (
+            <button
+              key={opt}
+              className={`filter-chip${filter === opt ? ' active' : ''}`}
+              onClick={() => setFilter(opt)}>
+              {opt[0].toUpperCase() + opt.slice(1)}
+            </button>
+          ))}
+        </div>
       </div>
-      <textarea
-        ref={textareaRef}
-        value={logText}
-        readOnly
-        style={{resize: 'none'}}
-        rows={20}
-      />
+
+      <div className="debug-log">
+        {filtered.length === 0 ? (
+          <div className="debug-log-empty">
+            {logs.length === 0
+              ? 'Press any button to capture events...'
+              : 'No events match the current filter.'}
+          </div>
+        ) : (
+          filtered.map(e => (
+            <div key={e.id} className={`debug-log-row debug-log-${e.kind}`}>
+              <span className="debug-log-time">{e.timestamp}</span>
+              <span className="debug-log-btn">B{e.button}</span>
+              <span className="debug-log-kind">
+                {e.kind === 'press' ? 'Press' : 'Release'}
+              </span>
+              <span className="debug-log-value">{e.value.toFixed(2)}</span>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };

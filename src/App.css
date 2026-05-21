@@ -1,7 +1,6 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
 }
 
 .title {
@@ -12,34 +11,280 @@
 }
 
 .card {
-  background-color: rgba(0, 0, 0, 0.2);
+  background:
+    linear-gradient(180deg, rgba(99, 102, 241, 0.06) 0%, transparent 30%),
+    rgba(0, 0, 0, 0.2);
   border-radius: 0.75em;
   border: solid 1px rgb(30, 40, 60);
   box-shadow: 0px 10px 40px rgb(99 102 241 / 0.2);
-  max-width: 700px;
+  margin-bottom: 1.5rem;
+  max-width: 900px;
   padding: 1.5em;
+}
+
+.card-header {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.card-title {
+  flex: 1;
+  min-width: 280px;
+}
+
+.card-title h2 {
+  margin: 0 0 0.4em;
+  word-break: break-word;
+}
+
+.card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.badge {
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.7em;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  padding: 0.25em 0.7em;
+  text-transform: uppercase;
+}
+
+.badge-good {
+  background-color: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.4);
+  color: rgb(134, 239, 172);
+}
+
+.badge-warn {
+  background-color: rgba(234, 179, 8, 0.12);
+  border-color: rgba(234, 179, 8, 0.4);
+  color: rgb(253, 224, 71);
+}
+
+.badge-info {
+  background-color: rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.45);
+  color: rgb(165, 180, 252);
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  background-color: rgba(99, 102, 241, 0.15);
+  border-radius: 0.5em;
+  border: solid 1px rgba(99, 102, 241, 0.45);
+  box-shadow: none;
+  color: rgb(199, 210, 254);
+  cursor: pointer;
+  font-size: 0.8em;
+  margin: 0;
+  padding: 0.5em 0.9em;
+  transition: background-color 100ms ease;
+}
+
+.action-btn:hover:not(:disabled) {
+  background-color: rgba(99, 102, 241, 0.3);
+}
+
+.action-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.card-meta {
+  gap: 0.25rem 1rem;
+}
+
+.section-title {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.75em;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+  margin: 0.75rem 0 0.6rem;
+  text-transform: uppercase;
 }
 
 .row {
   display: flex;
   flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .info {
-  margin-right: 0.5em;
   border-radius: 0.3em;
+  display: flex;
+  flex-direction: column;
+  margin-right: 0.5em;
+  min-width: 0;
 }
 
-textarea {
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 0.3em;
-  border: solid 1px rgb(30, 40, 60);
-  box-sizing: border-box;
-  color: #00ff00;
+.info label {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.7em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.info p {
+  color: white;
   font-family: monospace;
   font-size: 0.9em;
-  padding: 0.5em;
-  width: 100%;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 1.1rem 0;
+}
+
+.btn-grid {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+}
+
+.btn-cell {
+  background-color: rgba(40, 40, 60, 0.4);
+  border-radius: 0.5em;
+  border: solid 1px rgb(50, 50, 80);
+  min-height: 64px;
+  overflow: hidden;
+  position: relative;
+  transition:
+    background-color 80ms ease,
+    border-color 80ms ease,
+    transform 80ms ease,
+    box-shadow 80ms ease;
+}
+
+.btn-cell.pressed {
+  background-color: rgba(99, 102, 241, 0.55);
+  border-color: rgb(129, 140, 248);
+  box-shadow: 0 0 12px rgb(99 102 241 / 0.6);
+  transform: translateY(-1px);
+}
+
+.btn-cell-trigger.pressed {
+  background-color: rgba(40, 40, 60, 0.4);
+  border-color: rgb(129, 140, 248);
+  box-shadow: 0 0 12px rgb(99 102 241 / 0.4);
+  transform: none;
+}
+
+.btn-cell-fill {
+  background: linear-gradient(
+    180deg,
+    rgba(99, 102, 241, 0.7) 0%,
+    rgba(99, 102, 241, 0.4) 100%
+  );
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  transition: height 60ms linear;
+  z-index: 0;
+}
+
+.btn-cell-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+  height: 100%;
+  justify-content: center;
+  padding: 0.4em 0.3em;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-cell-label {
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.btn-cell-sub {
+  color: rgba(255, 255, 255, 0.45);
+  font-family: monospace;
+  font-size: 0.65em;
+  line-height: 1;
+}
+
+.btn-cell-value {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: monospace;
+  font-size: 0.7em;
+  line-height: 1;
+}
+
+.sticks-row {
+  gap: 1.5rem;
+}
+
+.stick {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 0.5em;
+  border: solid 1px rgb(30, 40, 60);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.75rem;
+}
+
+.stick-header {
+  align-items: center;
+  display: flex;
+  gap: 0.4rem;
+}
+
+.stick-title {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75em;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.stick-pressed-pill {
+  background-color: rgba(244, 114, 182, 0.2);
+  border-radius: 999px;
+  border: 1px solid rgba(244, 114, 182, 0.45);
+  color: rgb(249, 168, 212);
+  font-size: 0.6em;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  padding: 0.1em 0.55em;
+  text-transform: uppercase;
+}
+
+.stick-svg {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.stick-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  justify-content: center;
+  text-align: center;
 }
 
 input {
@@ -63,4 +308,134 @@ button {
   font-size: 0.9em;
   margin-bottom: 0.5em;
   padding: 0.7em 1em;
+}
+
+.debug-controls {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.debug-controls input {
+  flex: 1;
+  min-width: 200px;
+  width: auto;
+}
+
+.debug-filters {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.filter-chip {
+  background-color: rgba(99, 102, 241, 0.15);
+  border-radius: 0.5em;
+  border: solid 1px rgba(99, 102, 241, 0.45);
+  box-shadow: none;
+  color: rgb(199, 210, 254);
+  cursor: pointer;
+  font-size: 0.8em;
+  margin: 0;
+  padding: 0.5em 0.9em;
+  transition: background-color 100ms ease;
+}
+
+.filter-chip:hover {
+  background-color: rgba(99, 102, 241, 0.3);
+}
+
+.filter-chip.active {
+  background-color: rgba(99, 102, 241, 0.45);
+  border-color: rgb(129, 140, 248);
+  color: white;
+}
+
+.debug-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+
+.debug-stat-chip {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 0.35em;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: inline-flex;
+  font-family: monospace;
+  font-size: 0.75em;
+  gap: 0.35rem;
+  padding: 0.2em 0.55em;
+}
+
+.debug-stat-label {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.debug-stat-count {
+  color: rgb(199, 210, 254);
+  font-weight: bold;
+}
+
+.debug-log {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 0.4em;
+  border: solid 1px rgb(30, 40, 60);
+  font-family: monospace;
+  font-size: 0.95em;
+  height: 420px;
+  overflow-y: auto;
+  padding: 0.4em;
+}
+
+.debug-log-empty {
+  color: rgba(255, 255, 255, 0.4);
+  padding: 1em;
+  text-align: center;
+}
+
+.debug-log-row {
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-left: 3px solid transparent;
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: 200px 60px 80px 1fr;
+  padding: 0.35em 0.6em;
+}
+
+.debug-log-row:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.debug-log-press {
+  border-left-color: rgb(34, 197, 94);
+}
+
+.debug-log-release {
+  border-left-color: rgba(239, 68, 68, 0.7);
+}
+
+.debug-log-time {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.debug-log-btn {
+  color: rgb(199, 210, 254);
+  font-weight: bold;
+}
+
+.debug-log-press .debug-log-kind {
+  color: rgb(134, 239, 172);
+}
+
+.debug-log-release .debug-log-kind {
+  color: rgb(252, 165, 165);
+}
+
+.debug-log-value {
+  color: rgba(255, 255, 255, 0.6);
 }
